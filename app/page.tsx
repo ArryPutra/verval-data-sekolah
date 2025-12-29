@@ -7,23 +7,56 @@ import { useState } from "react";
 export default function Home() {
   const [npsn, setNpsn] = useState("");
   const [isShowResult, setIsShowResult] = useState(false);
+  const [resultRow, setResultRow] = useState<string[] | null>(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  function cari() {
+  async function cari() {
+    setErrorMsg("");
+    setResultRow(null);
+
     if (!npsn.trim()) {
       alert("Masukkan NPSN terlebih dahulu.");
       return;
     }
 
-    setIsShowResult(true);
+    try {
+      const res = await fetch('/api/read-dapodik', {
+        method: 'POST',
+        body: JSON.stringify({ npsn }),
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-    console.log("Cari data untuk NPSN:", npsn);
+      const data = await res.json();
+
+      if (res.ok) {
+        if (data.row) {
+          setResultRow(data.row);
+          setIsShowResult(true);
+        } else {
+          setErrorMsg(data.message || "NPSN tidak ditemukan");
+        }
+      } else {
+        setErrorMsg(data.error || "Terjadi kesalahan server");
+      }
+
+    } catch (err) {
+      console.error(err);
+      setErrorMsg("Gagal menghubungi server");
+    }
   }
 
   function SearchForm() {
     return (
-      <div className="mt-6">
-        <TextField name="npsn" placeholder="Masukkan NPSN" className="placeholder:text-center text-center w-full" onChange={(e) => setNpsn(e.target.value)} />
+      <div className="mt-6 w-full">
+        <TextField
+          name="npsn"
+          placeholder="Masukkan NPSN"
+          className="placeholder:text-center text-center w-full"
+          onChange={(e) => setNpsn(e.target.value)}
+        />
         <Button label="Cari Data" className="mt-4" onClick={cari} />
+
+        {errorMsg && <p className="mt-3 text-red-500">{errorMsg}</p>}
       </div>
     );
   }
@@ -31,7 +64,13 @@ export default function Home() {
   function SuccessAction() {
     return (
       <div className="flex flex-col items-center mt-6 w-full">
-        <Button label="Simpan Data" />
+        <div className="bg-gray-100 p-4 rounded w-full text-left">
+          {resultRow?.map((cell, index) => (
+            <p key={index}><strong>{cell}</strong></p>
+          ))}
+        </div>
+
+        <Button label="Simpan Data" className="mt-4" />
         <Button onClick={() => setIsShowResult(false)} label="Kembali" variant="gray" className="mt-3" />
       </div>
     )
@@ -54,6 +93,4 @@ export default function Home() {
       </div>
     </main>
   );
-
-
 }
