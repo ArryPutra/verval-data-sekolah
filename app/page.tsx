@@ -9,7 +9,7 @@ export default function Home() {
   const [isShowResult, setIsShowResult] = useState(false);
   const [resultRow, setResultRow] = useState<string[] | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
-
+  // 
   async function cari() {
     setErrorMsg("");
     setResultRow(null);
