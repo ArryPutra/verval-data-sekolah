@@ -9,23 +9,21 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'NPSN wajib diisi' }, { status: 400 });
         }
 
-        // Auth menggunakan Service Account
-        const auth = await google.auth.getClient({
-            scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
+        // Auth menggunakan Service Account JSON dari env var
+        const auth = new google.auth.GoogleAuth({
+            credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON!),
+            scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
 
-        const sheets = google.sheets({ version: 'v4', auth });
+        const sheets = google.sheets({ version: 'v4', auth: auth });
 
-        // Ambil seluruh kolom A:J untuk semua baris
         const response = await sheets.spreadsheets.values.get({
-            spreadsheetId: process.env.SHEET_ID,
-            range: 'Metadata!A:J'
+            spreadsheetId: process.env.SHEET_ID!,
+            range: 'Metadata!A:J',
         });
 
         const rows = response.data.values || [];
-
-        // Cari baris yang mengandung NPSN
-        const result = rows.find(row => row[1] === npsn); // kolom B adalah NPSN
+        const result = rows.find(row => row[1] === npsn); // kolom B = NPSN
 
         if (!result) {
             return NextResponse.json({ message: 'NPSN tidak ditemukan' });
