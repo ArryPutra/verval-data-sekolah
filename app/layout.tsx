@@ -9,8 +9,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VERIFIKASI & VALIDASI DAYA LISTRIK SEKOLAH - BPMP PROVINSI KALIMANTAN SELATAN",
+  title: "VERVAL DAYA LISTRIK SEKOLAH - BPMP PROVINSI KALIMANTAN SELATAN",
   description: "Verifikasi & Validasi Daya Listrik Sekolah - BPMP Provinsi Kalimantan Selatan",
+  icons: {
+    icon: "/images/tut-wuri-handayani.png"
+  }
 };
 
 export default function RootLayout({
@@ -19,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={`${inter.className}`}>
         {children}
       </body>
