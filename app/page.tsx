@@ -1,25 +1,13 @@
 "use client";
-<<<<<<< HEAD
-import Button from "@/components/Button";
-=======
 import Alert from "@/components/Alert";
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
->>>>>>> dev
 import TextField from "@/components/TextField";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Home() {
   const [npsn, setNpsn] = useState("");
-<<<<<<< HEAD
-  const [isShowResult, setIsShowResult] = useState(false);
-  const [resultRow, setResultRow] = useState<string[] | null>(null);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const [dayaListrik, setDayaListrik] = useState("");
-  const [sumberListrik, setSumberListrik] = useState("");
-=======
   const [dayaListrik, setDayaListrik] = useState("");
   const [sumberListrik, setSumberListrik] = useState("");
   const [resultRow, setResultRow] = useState<string[] | null>(null);
@@ -27,7 +15,6 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isShowResult, setIsShowResult] = useState(false);
->>>>>>> dev
 
   useEffect(() => {
     if (resultRow) {
@@ -36,25 +23,16 @@ export default function Home() {
     }
   }, [resultRow]);
 
-<<<<<<< HEAD
-  // Cari data
-  async function cari() {
-    setErrorMsg("");
-=======
   async function searchDapodik(npsn: string) {
     setIsLoading(true);
 
     setErrorMessage("");
->>>>>>> dev
     setResultRow(null);
 
     if (!npsn.trim()) {
       alert("Masukkan NPSN terlebih dahulu.");
-<<<<<<< HEAD
-=======
       setIsLoading(false);
 
->>>>>>> dev
       return;
     }
 
@@ -72,16 +50,6 @@ export default function Home() {
           setResultRow(data.row);
           setIsShowResult(true);
         } else {
-<<<<<<< HEAD
-          setErrorMsg(data.message || "NPSN tidak ditemukan");
-        }
-      } else {
-        setErrorMsg(data.error || "Terjadi kesalahan server");
-      }
-    } catch (err) {
-      console.error(err);
-      setErrorMsg("Gagal menghubungi server");
-=======
           setErrorMessage(data.message || "NPSN tidak ditemukan");
         }
       } else {
@@ -92,40 +60,23 @@ export default function Home() {
       setErrorMessage("Gagal menghubungi server");
     } finally {
       setIsLoading(false);
->>>>>>> dev
     }
   }
 
   // Di dalam komponen Home (setelah fungsi cari)
-<<<<<<< HEAD
-  const saveData = async () => {
-    if (!resultRow || !npsn.trim() || !dayaListrik.trim() || !sumberListrik.trim()) {
-      alert("Pastikan semua field terisi dengan benar.");
-      return;
-    }
-
-=======
   const saveData = async (npsn: string, dayaListrik: string, sumberListrik: string) => {
->>>>>>> dev
     // Tampilkan loading atau disable tombol sementara
     const confirmSave = confirm("Apakah Anda yakin ingin menyimpan data ini?");
     if (!confirmSave) return;
 
     try {
-<<<<<<< HEAD
-=======
       setIsLoading(true);
 
->>>>>>> dev
       const res = await fetch("/api/update-dapodik", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-<<<<<<< HEAD
-          npsn: resultRow[1], // NPSN dari data yang sudah dicari
-=======
           npsn: npsn, // NPSN dari data yang sudah dicari
->>>>>>> dev
           dayaListrik: dayaListrik.trim(),
           sumberListrik: sumberListrik.trim(),
         }),
@@ -133,11 +84,8 @@ export default function Home() {
 
       const data = await res.json();
 
-<<<<<<< HEAD
-=======
       console.log(data);
 
->>>>>>> dev
       if (res.ok) {
         alert("Data berhasil disimpan ke Google Sheets!");
 
@@ -147,10 +95,7 @@ export default function Home() {
           const updated = [...prev];
           updated[7] = dayaListrik.trim();
           updated[8] = sumberListrik.trim();
-<<<<<<< HEAD
-=======
           updated[9] = updated[7] && updated[8] ? "SUDAH" : "BELUM";
->>>>>>> dev
           return updated;
         });
 
@@ -163,23 +108,6 @@ export default function Home() {
     } catch (err) {
       console.error(err);
       alert("Terjadi kesalahan saat menghubungi server.");
-<<<<<<< HEAD
-    }
-  };
-
-  function SearchForm() {
-    return (
-      <div className="mt-6 w-full">
-        <TextField
-          name="npsn"
-          placeholder="Masukkan NPSN"
-          inputClassName="placeholder:text-center text-center w-full"
-          onChange={(e) => setNpsn(e.target.value)}
-        />
-        <Button label="Cari Data" className="mt-4" onClick={cari} />
-
-        {errorMsg && <p className="mt-3 text-red-500">{errorMsg}</p>}
-=======
     } finally {
       setIsLoading(false);
     }
@@ -203,58 +131,10 @@ export default function Home() {
           onChange={(e) => setNpsn(e.target.value)}
         />
         <Button label="Cari Data" className="mt-4" onClick={() => searchDapodik(npsn)} isLoading={isLoading} />
->>>>>>> dev
       </div>
     );
   }
 
-<<<<<<< HEAD
-  function SuccessDisplay() {
-    return (
-      <div className="flex flex-col items-center mt-6 w-full">
-        <div className="bg-gray-100 p-4 w-full border-2 border-gray-200 rounded-xl">
-          <table className="w-full">
-            <tbody>
-              <tr>
-                <td className="text-start">Nama Satpen:</td>
-                <th className="text-start pl-2">{resultRow?.[0] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">NPSN:</td>
-                <th className="text-start pl-2">{resultRow?.[1] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Jenjang:</td>
-                <th className="text-start pl-2">{resultRow?.[2] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Kecamatan:</td>
-                <th className="text-start pl-2">{resultRow?.[3] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Kabupaten/Kota:</td>
-                <th className="text-start pl-2">{resultRow?.[4] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Daya (Dapodik):</td>
-                <th className="text-start pl-2">{resultRow?.[5] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Sumber listrik (Dapodik):</td>
-                <th className="text-start pl-2">{resultRow?.[6] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Daya (Entri):</td>
-                <th className="text-start pl-2">{resultRow?.[7] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Sumber listrik (Entri):</td>
-                <th className="text-start pl-2">{resultRow?.[8] || "-"}</th>
-              </tr>
-              <tr>
-                <td className="text-start">Status:</td>
-                <th className="text-start pl-2">{resultRow?.[9] || "-"}</th>
-=======
   function ResultDisplay() {
     return (
       <div className="flex flex-col items-center mt-6 w-full">
@@ -305,7 +185,6 @@ export default function Home() {
                     {resultRow?.[9] || "-"}
                   </div>
                 </th>
->>>>>>> dev
               </tr>
             </tbody>
           </table>
@@ -315,20 +194,6 @@ export default function Home() {
           name="daya_listrik"
           placeholder="Masukkan daya listrik"
           label="Daya Listrik"
-<<<<<<< HEAD
-          className="mt-4"
-          value={dayaListrik}
-          onChange={(e) => setDayaListrik(e.target.value)}
-        />
-        <TextField
-          name="sumber_listrik"
-          placeholder="Masukkan sumber listrik"
-          label="Sumber Listrik"
-          className="mt-4"
-          value={sumberListrik}
-          onChange={(e) => setSumberListrik(e.target.value)}
-        />
-=======
           className="mt-5"
           value={dayaListrik}
           onChange={(e) => setDayaListrik(e.target.value)}
@@ -340,18 +205,10 @@ export default function Home() {
           options={["PLN", "Diesel", "PLN & Diesel", "Menumpang", "Lainnya"]}
           valueSelected={sumberListrik}
           onChange={(e) => setSumberListrik(e.target.value)} />
->>>>>>> dev
 
         <Button
           label="Simpan Data"
           className="mt-4"
-<<<<<<< HEAD
-          onClick={saveData}
-          disabled={!dayaListrik.trim() || !sumberListrik.trim() || !resultRow?.[1]}
-        />
-        <Button
-          onClick={() => setIsShowResult(false)}
-=======
           onClick={() => saveData(npsn, dayaListrik, sumberListrik)}
           isLoading={isLoading}
         />
@@ -360,7 +217,6 @@ export default function Home() {
             setNpsn("");
             setIsShowResult(false);
           }}
->>>>>>> dev
           label="Kembali"
           variant="gray"
           className="mt-3"
@@ -381,21 +237,13 @@ export default function Home() {
         />
       )}
 
-<<<<<<< HEAD
-      <div className="flex flex-col items-center bg-white p-6 rounded-xl mt-6 shadow-xl w-fit max-sm:w-full max-sm:h-full max-sm:overflow-scroll">
-=======
       <div className="flex flex-col items-center bg-white p-6 rounded-xl mt-6 shadow-xl w-fit max-sm:w-full max-sm:h-full overflow-auto sm:my-8">
->>>>>>> dev
         <h1 className="font-bold text-xl text-blue-500">
           BPMP Provinsi Kalimantan Selatan
         </h1>
         <p>Verifikasi & Validasi Daya Listrik Sekolah</p>
 
-<<<<<<< HEAD
-        {!isShowResult ? SearchForm() : SuccessDisplay()}
-=======
         {!isShowResult ? SearchDisplay() : ResultDisplay()}
->>>>>>> dev
       </div>
     </main>
   );
