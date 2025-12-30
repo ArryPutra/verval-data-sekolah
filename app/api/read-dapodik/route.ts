@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         const sheets = google.sheets({
             version: 'v4',
             auth: new google.auth.GoogleAuth({
-                credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON!),
+                credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS!),
                 scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
             })
         });
