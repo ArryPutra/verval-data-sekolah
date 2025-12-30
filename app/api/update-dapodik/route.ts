@@ -5,13 +5,6 @@ export async function POST(req: NextRequest) {
     try {
         const { npsn, dayaListrik, sumberListrik } = await req.json();
 
-        if (!npsn || !dayaListrik || !sumberListrik) {
-            return NextResponse.json(
-                { error: "NPSN, dayaListrik, dan sumberListrik wajib diisi" },
-                { status: 400 }
-            );
-        }
-
         // Inisialisasi Google Sheets API
         const auth = new google.auth.GoogleAuth({
             credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS!),
