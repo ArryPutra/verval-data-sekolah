@@ -1,6 +1,6 @@
 type AlertProps = {
     className?: string;
-    variant: "error" | "success";
+    variant: "error" | "success" | "warning";
     title: String;
     message: String;
 }
@@ -12,6 +12,8 @@ export default function Alert({ className, variant, title, message }: AlertProps
         baseClass += "bg-red-100 text-red-500 border-red-200";
     } else if (variant == "success") {
         baseClass += "bg-green-100 text-green-500 border-green-200";
+    } else if (variant == "warning") {
+        baseClass += "bg-amber-100 text-amber-500 border-amber-200";
     }
 
     return (
