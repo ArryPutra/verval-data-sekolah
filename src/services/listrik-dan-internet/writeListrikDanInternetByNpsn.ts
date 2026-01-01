@@ -1,6 +1,5 @@
-export async function writeDapodikByNpsn(
+export async function writeListrikDanInternetByNpsn(
     dataDapodikRowIndex: any,
-    npsn: string,
     daya: string,
     sumberListrik: string,
     namaKepalaSekolah: string,
@@ -8,8 +7,7 @@ export async function writeDapodikByNpsn(
     internetProvider: string,
     kecepatanInternet: string
 ) {
-    if (!npsn.trim() ||
-        !daya ||
+    if (!daya ||
         !sumberListrik ||
         !namaKepalaSekolah ||
         !nomorTelepon ||
@@ -17,12 +15,11 @@ export async function writeDapodikByNpsn(
         !kecepatanInternet)
         throw new Error("Mohon lengkapi semua data");
 
-    const res = await fetch("/api", {
+    const res = await fetch("/api/listrik-dan-internet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             dataDapodikRowIndex: dataDapodikRowIndex,
-            npsn: npsn,
             daya,
             sumberListrik,
             namaKepalaSekolah,

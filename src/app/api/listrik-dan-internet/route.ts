@@ -3,8 +3,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const { searchParams } = new URL(req.url);
+        const npsn = searchParams.get("npsn");
+
+        if (!npsn) {
+            return NextResponse.json(
+                { error: "Parameter npsn wajib diisi" },
+                { status: 400 }
+            );
+        }
+
         const auth = new google.auth.GoogleAuth({
             credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS!),
             scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
@@ -13,17 +23,16 @@ export async function GET() {
         const sheets = google.sheets({ version: "v4", auth });
 
         const response = await sheets.spreadsheets.values.get({
-            spreadsheetId: process.env.SPREADSHEET_ID!,
+            spreadsheetId: process.env.SPREADSHEET_LISTRIK_DAN_INTERNET_ID!,
             range: "Metadata!A:N",
         });
 
         const rows = response.data.values;
-
-        if (!rows || rows.length === 0) {
+        if (!rows || rows.length < 2) {
             return NextResponse.json(
                 { error: "Data tidak ditemukan" },
                 { status: 404 }
-            )
+            );
         }
 
         const [headerRow, ...dataRows] = rows;
@@ -45,26 +54,34 @@ export async function GET() {
             [headerRow[13]]: "Status",
         };
 
-        const result = dataRows.map((row) => {
-            const obj: Record<string, string | null> = {};
+        // cari berdasarkan NPSN (kolom index 1)
+        const rowIndexInData = dataRows.findIndex(
+            row => row[1] === npsn
+        );
 
-            headerRow.forEach((header, index) => {
-                const key = headerMapping[header];
+        if (rowIndexInData === -1) {
+            return NextResponse.json(
+                { message: "NPSN tidak ditemukan" },
+                { status: 404 }
+            );
+        }
 
-                if (row[index].trim() == '') {
-                    obj[key] = row[index] = null
-                } else {
-                    obj[key] = row[index];
-                }
-            });
+        const foundRow = dataRows[rowIndexInData];
 
-            return obj;
+        const data: Record<string, string | null> = {};
+
+        headerRow.forEach((header, index) => {
+            const key = headerMapping[header];
+            const value = foundRow[index]?.trim();
+            data[key] = value ? value : null;
         });
 
-        return NextResponse.json(result);
+        return NextResponse.json({
+            data,
+            rowIndex: rowIndexInData + 2 // +1 header, +1 1-based index
+        });
     } catch (error: any) {
         console.error(error);
-
         return NextResponse.json(
             { error: error.message },
             { status: 500 }
@@ -74,7 +91,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     try {
-        const { dataDapodikRowIndex, npsn, daya, sumberListrik, namaKepalaSekolah, nomorTelepon, internetProvider, kecepatanInternet } = await req.json();
+        const { dataDapodikRowIndex, daya, sumberListrik, namaKepalaSekolah, nomorTelepon, internetProvider, kecepatanInternet } = await req.json();
 
         const auth = new google.auth.GoogleAuth({
             credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS!),
@@ -84,7 +101,7 @@ export async function POST(req: NextRequest) {
         const sheets = google.sheets({ version: "v4", auth });
 
         await sheets.spreadsheets.values.update({
-            spreadsheetId: process.env.SPREADSHEET_ID!,
+            spreadsheetId: process.env.SPREADSHEET_LISTRIK_DAN_INTERNET_ID!,
             range: `Metadata!H${dataDapodikRowIndex}:M${dataDapodikRowIndex}`,
             valueInputOption: "USER_ENTERED",
             requestBody: {

@@ -1,8 +1,9 @@
 import Alert from '@/src/components/Alert'
 import Button from '@/src/components/Button'
 import TextField from '@/src/components/TextField'
+import { fetchListrikDanInternetByNpsn } from '@/src/services/listrik-dan-internet/fetchListrikDanInternetByNpsn'
+import { fetchRevitalisasiPdmByNpsn } from '@/src/services/revitalisasi-pdm/fetchRevitalisasiPdmByNpsn'
 import { useEffect, useState } from 'react'
-import { fetchDapodikByNpsn } from '../actions/fetchDapodikByNpsn';
 
 type SearchDapodikViewProps = {
     onResult: (dapodikData: any, dapodikDataRowIndex: any) => void
@@ -33,7 +34,7 @@ export default function SearchDapodikView({ onResult }: SearchDapodikViewProps) 
         setErrorMessage("");
 
         try {
-            const result = await fetchDapodikByNpsn(npsn);
+            const result = await fetchRevitalisasiPdmByNpsn(npsn);
             setDapodikData(result[0]);
             setDapodikDataRowIndex(result[1]);
         } catch (error: any) {

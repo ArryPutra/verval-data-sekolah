@@ -2,10 +2,9 @@ import Alert from "@/src/components/Alert";
 import Button from "@/src/components/Button";
 import Dropdown from "@/src/components/Dropdown";
 import TextField from "@/src/components/TextField";
-import { error } from "console";
 import { useState } from "react";
-import { writeDapodikByNpsn } from "../actions/writeDapodikByNpsn";
 import { maskText } from "@/src/utils/maskText";
+import { writeListrikDanInternetByNpsn } from "@/src/services/listrik-dan-internet/writeListrikDanInternetByNpsn";
 
 type ResultDapodikViewProps = {
     dataDapodikParam: any
@@ -44,9 +43,8 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
         try {
             setIsLoading(true);
 
-            const result = await writeDapodikByNpsn(
+            const result = await writeListrikDanInternetByNpsn(
                 dataDapodikRowIndex,
-                dataDapodikParam["NPSN"],
                 dayaEntri,
                 sumberListrikEntri,
                 namaKepalaSekolah,
@@ -103,7 +101,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     <p className="w-full font-bold">{dataDapodikParam["Kabupaten Kota"]}</p>
                 </section>
 
-                <h1 className="font-bold text-blue-500 mt-6">Data (Dapodik)</h1>
+                {/* <h1 className="font-bold text-blue-500 mt-6">Data (Dapodik)</h1>
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Daya Listrik (Dapodik):</h1>
                     <p className="w-full font-bold">{dataDapodikParam["Daya (Dapodik)"]}</p>
@@ -111,15 +109,15 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Sumber Listrik (Dapodik):</h1>
                     <p className="w-full font-bold">{dataDapodikParam["Sumber Listrik (Dapodik)"]}</p>
-                </section>
+                </section> */}
 
-                <h1 className="font-bold text-blue-500 mt-6">Data (Terbaru)</h1>
+                <h1 className="font-bold text-blue-500 mt-6">Data Terbaru</h1>
                 <section className="flex max-sm:flex-col items-start">
-                    <h1 className="w-full">Daya Listrik (Terbaru):</h1>
+                    <h1 className="w-full">Daya Listrik:</h1>
                     <p className={`w-full font-bold ${dataDapodik["Daya (Entri)"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Daya (Entri)"] ?? "Kosong"}</p>
                 </section>
                 <section className="flex max-sm:flex-col items-start">
-                    <h1 className="w-full">Sumber Listrik (Terbaru):</h1>
+                    <h1 className="w-full">Sumber Listrik:</h1>
                     <p className={`w-full font-bold ${dataDapodik["Sumber Listrik (Entri)"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Sumber Listrik (Entri)"] ?? "Kosong"}</p>
                 </section>
                 <section className="flex max-sm:flex-col items-start">
@@ -156,84 +154,83 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 </section>
             </div>
 
-            <div className="w-full space-y-3 mt-4">
 
-                <div className="space-y-3">
-                    <TextField
-                        name="daya"
-                        placeholder="Masukkan daya (entri)"
-                        label="Daya Listrik Saat Ini"
-                        value={dayaEntri}
-                        onChange={(e) => { setDayaEntri(e.target.value) }} />
-                    <Dropdown
-                        name="sumber_listrik"
-                        label="Sumber Listrik Saat Ini"
-                        options={["PLN", "Diesel", "PLN/Diesel", "Tenaga Surya", "Menumpang", "Tidak Ada", "Lainnya"]}
-                        valueSelected={sumberListrikEntri}
-                        onChange={(e) => { setSumberListrikEntri(e.target.value) }} />
-                    <TextField
-                        name="nama_kepala_sekolah"
-                        placeholder="Masukkan nama kepala sekolah"
-                        label="Nama Kepala Sekolah"
-                        value={namaKepalaSekolah}
-                        onChange={(e) => { setNamaKepalaSekolah(e.target.value) }} />
-                    <TextField
-                        name="nomor_telepon"
-                        placeholder="Masukkan nomor telepon"
-                        label="Nomor Telepon"
-                        value={
-                            isUserSecretTyping ?
-                                nomorTelepon
-                                :
-                                maskText(nomorTelepon)
-                        }
-                        onChange={(e) => {
-                            setIsUserSecretTyping(true);
-                            setNomorTelepon("")
-                            isUserSecretTyping &&
-                                setNomorTelepon(e.target.value)
-                        }
-                        } />
-                    <TextField
-                        name="internet_provider"
-                        placeholder="Masukkan internet provider"
-                        label="Internet Provider"
-                        value={internetProvider}
-                        onChange={(e) => { setInternetProvider(e.target.value) }} />
-                    <TextField
-                        name="kecepatan_internet_mbps"
-                        placeholder="Masukkan kecepatan internet (mbps)"
-                        label="Kecepatan Internet (Mbps)"
-                        value={kecepatanInternetMbps}
-                        onChange={(e) => { setKecepatanInternetMbps(e.target.value) }} />
-
-                    {
-                        errorMessage &&
-                        <Alert
-                            title="Pesan Kesalahan:"
-                            message={errorMessage}
-                            variant="error" />
+            <div className="space-y-3 mt-4">
+                <TextField
+                    name="daya"
+                    placeholder="Masukkan daya (entri)"
+                    label="Daya Listrik"
+                    value={dayaEntri}
+                    onChange={(e) => { setDayaEntri(e.target.value) }} />
+                <Dropdown
+                    name="sumber_listrik"
+                    label="Sumber Listrik"
+                    options={["PLN", "Diesel", "PLN/Diesel", "Tenaga Surya", "Menumpang", "Tidak Ada", "Lainnya"]}
+                    valueSelected={sumberListrikEntri}
+                    onChange={(e) => { setSumberListrikEntri(e.target.value) }} />
+                <TextField
+                    name="nama_kepala_sekolah"
+                    placeholder="Masukkan nama kepala sekolah"
+                    label="Nama Kepala Sekolah"
+                    value={namaKepalaSekolah}
+                    onChange={(e) => { setNamaKepalaSekolah(e.target.value) }} />
+                <TextField
+                    name="nomor_telepon"
+                    placeholder="Masukkan nomor telepon"
+                    label="Nomor Telepon"
+                    value={
+                        isUserSecretTyping ?
+                            nomorTelepon
+                            :
+                            maskText(nomorTelepon)
                     }
-                    {
-                        successMessage &&
-                        <Alert
-                            title="Pesan Berhasil:"
-                            message={successMessage}
-                            variant="success" />
+                    onChange={(e) => {
+                        setIsUserSecretTyping(true);
+                        setNomorTelepon("")
+                        isUserSecretTyping &&
+                            setNomorTelepon(e.target.value)
                     }
+                    } />
+                <TextField
+                    name="internet_provider"
+                    placeholder="Masukkan internet provider"
+                    label="Internet Provider"
+                    value={internetProvider}
+                    onChange={(e) => { setInternetProvider(e.target.value) }} />
+                <TextField
+                    name="kecepatan_internet_mbps"
+                    placeholder="Masukkan kecepatan internet (mbps)"
+                    label="Kecepatan Internet (Mbps)"
+                    value={kecepatanInternetMbps}
+                    onChange={(e) => { setKecepatanInternetMbps(e.target.value) }} />
 
-                </div>
+                {
+                    errorMessage &&
+                    <Alert
+                        title="Pesan Kesalahan:"
+                        message={errorMessage}
+                        variant="error" />
+                }
+                {
+                    successMessage &&
+                    <Alert
+                        title="Pesan Berhasil:"
+                        message={successMessage}
+                        variant="success" />
+                }
 
-                <Button
-                    label="Simpan Data"
-                    className="mt-6"
-                    isLoading={isLoading}
-                    onClick={() => onSave()} />
-                <Button
-                    label="Kembali"
-                    variant="gray"
-                    onClick={() => onClear()} />
             </div>
+
+            <Button
+                label="Simpan Data"
+                className="mt-6"
+                isLoading={isLoading}
+                onClick={() => onSave()} />
+            <Button
+                label="Kembali"
+                variant="gray"
+                className="mt-4"
+                onClick={() => onClear()} />
 
         </div>
     )

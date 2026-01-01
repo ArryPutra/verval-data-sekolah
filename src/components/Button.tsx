@@ -27,7 +27,7 @@ export default function Button({ label, href, className, onClick, disabled = fal
 
     if (href) {
         return (
-            <Link href={href} className={baseClass} target="_blank">
+            <Link href={href} className={baseClass}>
                 {label}
             </Link>
         )
