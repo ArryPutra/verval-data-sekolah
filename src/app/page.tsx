@@ -1,9 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import SearchDapodikView from "./screens/SearchDapodikView";
-import ResultDapodikView from "./screens/ResultDapodikView";
 import Button from "../components/Button";
 
 export default function Home() {
