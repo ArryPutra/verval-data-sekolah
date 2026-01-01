@@ -5,6 +5,7 @@ import TextField from "@/src/components/TextField";
 import { error } from "console";
 import { useState } from "react";
 import { writeDapodikByNpsn } from "../actions/writeDapodikByNpsn";
+import { maskText } from "@/src/utils/maskText";
 
 type ResultDapodikViewProps = {
     dataDapodikParam: any
@@ -25,6 +26,8 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
     const [nomorTelepon, setNomorTelepon] = useState(dataDapodikParam["Nomor Telepon"]);
     const [internetProvider, setInternetProvider] = useState(dataDapodikParam["Internet Provider"]);
     const [kecepatanInternetMbps, setKecepatanInternetMbps] = useState(dataDapodikParam["Kecepatan Internet (Mbps)"]);
+
+    const [isUserSecretTyping, setIsUserSecretTyping] = useState(false);
 
     async function onSave() {
         setErrorMessage("");
@@ -60,7 +63,8 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     "Nama Kepala Sekolah": namaKepalaSekolah,
                     "Nomor Telepon": nomorTelepon,
                     "Internet Provider": internetProvider,
-                    "Kecepatan Internet (Mbps)": kecepatanInternetMbps
+                    "Kecepatan Internet (Mbps)": kecepatanInternetMbps,
+                    "Status": "SUDAH"
                 }));
                 setSuccessMessage(result.message);
             } else {
@@ -76,44 +80,89 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
     return (
         <div className="w-full">
 
-            <div className="p-3 border my-6 text-start rounded-xl bg-gray-50 border-gray-200 space-y-2
-            w-115">
-                {
-                    Object.entries(dataDapodik).map(([key]) => {
-                        return <section key={key} className="flex max-sm:flex-col items-center">
-                            <h1 className="w-full">{key}:</h1>
-                            {
-                                key !== "Status" ?
-                                    <p className="font-bold w-full">
-                                        {
-                                            dataDapodik[key] !== null ?
-                                                <span>{dataDapodik[key]}</span>
-                                                :
-                                                <span>-</span>
-                                        }
-                                    </p>
-                                    :
-                                    <p className="font-bold w-full">
-                                        <span className={`
-                                        ${dataDapodik[key] === "BELUM" ? "bg-red-500" : "bg-green-500"} text-white py-2 px-3 rounded-full text-sm`}>
-                                            {dataDapodik[key]}
-                                        </span>
-                                    </p>
-                            }
+            <div className="p-3 border mt-6 text-start rounded-xl bg-gray-50 border-gray-200 space-y-1.5">
+                <h1 className="font-bold text-blue-500">Profil Satpen</h1>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Nama Satpen:</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["Nama Satpen"]}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">NPSN:</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["NPSN"]}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Jenjang:</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["Jenjang"]}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Kecamatan:</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["Kecamatan"]}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Kabupaten/Kota:</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["Kabupaten Kota"]}</p>
+                </section>
 
-                        </section>
-                    })
-                }
+                <h1 className="font-bold text-blue-500 mt-6">Data (Dapodik)</h1>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Daya Listrik (Dapodik):</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["Daya (Dapodik)"]}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Sumber Listrik (Dapodik):</h1>
+                    <p className="w-full font-bold">{dataDapodikParam["Sumber Listrik (Dapodik)"]}</p>
+                </section>
+
+                <h1 className="font-bold text-blue-500 mt-6">Data (Terbaru)</h1>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Daya Listrik (Terbaru):</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Daya (Entri)"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Daya (Entri)"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Sumber Listrik (Terbaru):</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Sumber Listrik (Entri)"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Sumber Listrik (Entri)"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Nama Kepala Sekolah:</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Nama Kepala Sekolah"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Nama Kepala Sekolah"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Nomor Telepon:</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Nomor Telepon"] ? "text-black" : "text-red-500"}`}>{maskText(dataDapodik["Nomor Telepon"]) ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Internet Provider:</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Internet Provider"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Internet Provider"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Kecepatan Internet (Mbps):</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Kecepatan Internet (Mbps)"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Kecepatan Internet (Mbps)"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start h-fit max-sm:gap-1">
+                    <h1 className="w-full">Status Data:</h1>
+                    <p className="w-full h-fit flex text-sm">
+                        {
+                            dataDapodik["Status"] === "BELUM" ?
+                                <span className="bg-red-500 text-white w-fit font-semibold py-1 px-3 rounded-full">
+                                    Belum
+                                </span>
+                                :
+                                <span className="bg-green-500 text-white w-fit font-semibold py-1 px-3 rounded-full">
+                                    Sudah
+                                </span>
+                        }
+
+                    </p>
+                </section>
             </div>
 
-            <div className="w-full space-y-3">
-
+            <div className="w-full space-y-3 mt-4">
 
                 <div className="space-y-3">
                     <TextField
                         name="daya"
                         placeholder="Masukkan daya (entri)"
-                        label="Daya Saat Ini"
+                        label="Daya Listrik Saat Ini"
                         value={dayaEntri}
                         onChange={(e) => { setDayaEntri(e.target.value) }} />
                     <Dropdown
@@ -132,8 +181,19 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         name="nomor_telepon"
                         placeholder="Masukkan nomor telepon"
                         label="Nomor Telepon"
-                        value={nomorTelepon}
-                        onChange={(e) => { setNomorTelepon(e.target.value) }} />
+                        value={
+                            isUserSecretTyping ?
+                                nomorTelepon
+                                :
+                                maskText(nomorTelepon)
+                        }
+                        onChange={(e) => {
+                            setIsUserSecretTyping(true);
+                            setNomorTelepon("")
+                            isUserSecretTyping &&
+                                setNomorTelepon(e.target.value)
+                        }
+                        } />
                     <TextField
                         name="internet_provider"
                         placeholder="Masukkan internet provider"

@@ -15,7 +15,7 @@ type ButtonProps = {
 export default function Button({ label, href, className, onClick, disabled = false, variant = "primary", isLoading = false }: ButtonProps) {
     let baseClass = `px-4 py-2 rounded-lg font-semibold cursor-pointer 
     text-white w-full flex items-center justify-center duration-150
-    gap-2 focus:ring-3 ${className}`;
+    gap-2 focus:ring-3 h-fit ${className}`;
 
     if (variant === "primary") {
         baseClass += " bg-blue-500 hover:bg-blue-600 focus:ring-blue-300";
