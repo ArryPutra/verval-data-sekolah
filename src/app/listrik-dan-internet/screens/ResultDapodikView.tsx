@@ -158,10 +158,13 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
             <div className="space-y-3 mt-4">
                 <TextField
                     name="daya"
-                    placeholder="Masukkan daya (entri)"
+                    placeholder="Masukkan daya listrik"
                     label="Daya Listrik"
                     value={dayaEntri}
-                    onChange={(e) => { setDayaEntri(e.target.value) }} />
+                    onChange={(e) => {
+                        const value = e.target.value.replace(/[^0-9]/g, "");
+                        setDayaEntri(value)
+                    }} />
                 <Dropdown
                     name="sumber_listrik"
                     label="Sumber Listrik"
@@ -187,8 +190,9 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     onChange={(e) => {
                         setIsUserSecretTyping(true);
                         setNomorTelepon("")
+                        const value = e.target.value.replace(/[^0-9]/g, "");
                         isUserSecretTyping &&
-                            setNomorTelepon(e.target.value)
+                            setNomorTelepon(value)
                     }
                     } />
                 <TextField
