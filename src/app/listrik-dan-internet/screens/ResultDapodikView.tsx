@@ -5,6 +5,7 @@ import TextField from "@/src/components/TextField";
 import { useState } from "react";
 import { maskText } from "@/src/utils/maskText";
 import { writeListrikDanInternetByNpsn } from "@/src/services/listrik-dan-internet/writeListrikDanInternetByNpsn";
+import Link from "next/link";
 
 type ResultDapodikViewProps = {
     dataDapodikParam: any
@@ -232,7 +233,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 <TextField
                     name="kecepatan_internet_mbps"
                     placeholder="Contoh: 30, 24.5"
-                    label="Kecepatan Internet (Mbps)"
+                    label="Kecepatan Internet (Download Mbps)"
                     value={kecepatanInternetMbps}
                     onChange={(e) => {
                         const value = e.target.value
@@ -240,6 +241,14 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                             .replace(/(\..*)\./g, "$1");
                         setKecepatanInternetMbps(value)
                     }} />
+                <div className="w-full text-start">
+                    Silahkan cek kecepatan di:
+                    <Link href="https://www.speedtest.net/"
+                        target="_blank"
+                        className="text-blue-500 hover:underline ml-1">
+                        https://www.speedtest.net/
+                    </Link>
+                </div>
 
                 {
                     errorMessage &&
