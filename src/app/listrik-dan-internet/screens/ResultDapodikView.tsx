@@ -165,7 +165,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 <Dropdown
                     name="sumber_listrik"
                     label="Sumber Listrik"
-                    options={["PLN", "Diesel", "PLN/Diesel", "Tenaga Surya", "Menumpang", "Tidak Ada", "Lainnya"]}
+                    options={["PLN", "Diesel", "PLN & Diesel", "Tenaga Surya", "Menumpang", "Tidak Ada", "Lainnya"]}
                     valueSelected={sumberListrikEntri}
                     onChange={(e) => { setSumberListrikEntri(e.target.value) }} />
                 <TextField
