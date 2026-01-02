@@ -212,6 +212,12 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         "Telkomsel Orbit",
                         "Net1",
                         "Moratel (ISP lokal)",
+                        "Starlink",
+                        "Telkomsel",
+                        "Indosat Ooredoo Hutchison",
+                        "XL Axiata",
+                        "Smartfren",
+                        "Tri (3)",
                         "Tidak Ada",
                         "Lainnya",
                     ]}
