@@ -24,7 +24,7 @@ export default function TextField({
 
     return (
         <div className={`flex flex-col items-start w-full ${className}`}>
-            {label && <label className={`font-semibold ${labelClassName}`}>{label}</label>}
+            {label && <label className={`font-semibold text-start ${labelClassName}`}>{label}</label>}
             <input
                 type="text"
                 name={name}

@@ -55,7 +55,7 @@ export default function SearchDapodikView({ onResult }: SearchDapodikViewProps) 
                 label="NPSN"
                 placeholder="Masukkan NPSN"
                 inputClassName="placeholder:text-center text-center w-full"
-                labelClassName="text-center w-full"
+                labelClassName="!text-center w-full"
                 value={npsn}
                 onChange={(e) => setNpsn(e.target.value)} />
 
