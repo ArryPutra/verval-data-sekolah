@@ -176,7 +176,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     onChange={(e) => { setNamaKepalaSekolah(e.target.value) }} />
                 <TextField
                     name="nomor_telepon"
-                    placeholder="Masukkan nomor telepon"
+                    placeholder="contoh: 08123456789 (tanpa +/-)"
                     label="Nomor Telepon"
                     value={
                         isUserSecretTyping ?
