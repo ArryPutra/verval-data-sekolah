@@ -195,12 +195,34 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                             setNomorTelepon(value)
                     }
                     } />
-                <TextField
+                <Dropdown
+                    name="internet_provider"
+                    label="Internet Provider"
+                    options={[
+                        "IndiHome",
+                        "Biznet",
+                        "First Media",
+                        "MyRepublic",
+                        "CBN",
+                        "MNC Play",
+                        "Oxygen.id",
+                        "Iconnet (PLN)",
+                        "Indosat HiFi",
+                        "XL Satu Fiber",
+                        "Telkomsel Orbit",
+                        "Net1",
+                        "Moratel (ISP lokal)",
+                        "Tidak Ada",
+                        "Lainnya",
+                    ]}
+                    valueSelected={internetProvider}
+                    onChange={(e) => { setInternetProvider(e.target.value) }} />
+                {/* <TextField
                     name="internet_provider"
                     placeholder="Masukkan internet provider"
                     label="Internet Provider"
                     value={internetProvider}
-                    onChange={(e) => { setInternetProvider(e.target.value) }} />
+                    onChange={(e) => { setInternetProvider(e.target.value) }} /> */}
                 <TextField
                     name="kecepatan_internet_mbps"
                     placeholder="Contoh: 30, 24.5"
