@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VERVAL DAYA LISTRIK DAN INTERNET SEKOLAH",
-  description: "Verifikasi dan Validasi Daya Listrik & Internet Sekolah - BPMP Provinsi Kalimantan Selatan",
+  title: "VERIFIKASI DAN VALIDASI DATA SEKOLAH",
+  description: "Verifikasi dan Validasi Data Sekolah - BPMP Provinsi Kalimantan Selatan",
   icons: {
     icon: "/images/tut-wuri-handayani.png"
   }

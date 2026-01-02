@@ -130,7 +130,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Nomor Telepon:</h1>
                     <p className="w-full font-bold">
-                        {dataDapodik["Nomor Telepon"] ??
+                        {maskText(dataDapodik["Nomor Telepon"]) ??
                             <span className="text-red-500">Kosong</span>
                         }
                     </p>
