@@ -203,10 +203,15 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     onChange={(e) => { setInternetProvider(e.target.value) }} />
                 <TextField
                     name="kecepatan_internet_mbps"
-                    placeholder="Masukkan kecepatan internet (mbps)"
+                    placeholder="Contoh: 30, 24.5"
                     label="Kecepatan Internet (Mbps)"
                     value={kecepatanInternetMbps}
-                    onChange={(e) => { setKecepatanInternetMbps(e.target.value) }} />
+                    onChange={(e) => {
+                        const value = e.target.value
+                            .replace(/[^0-9.]/g, "")     // hanya angka & titik
+                            .replace(/(\..*)\./g, "$1");
+                        setKecepatanInternetMbps(value)
+                    }} />
 
                 {
                     errorMessage &&
