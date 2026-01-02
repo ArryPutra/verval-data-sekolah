@@ -113,11 +113,15 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 </section>
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Link Dokumentasi:</h1>
-                    <p className="w-full font-bold">
-                        {dataDapodik["Link Dokumentasi"] ??
-                            <span className="text-red-500">Kosong</span>
-                        }
-                    </p>
+                    <div className="w-full max-w-sm">
+                        <a href={dataDapodik["Link Dokumentasi"]}
+                            className="w-full break-all text-blue-500">
+                            {dataDapodik["Link Dokumentasi"] ??
+                                <span className="text-red-500">Kosong</span>
+                            }
+                        </a>
+                    </div>
+
                 </section>
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Nama Kepala Sekolah:</h1>
@@ -178,10 +182,15 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 <div className="mt-4 space-y-3">
                     <TextField
                         name="progres_entri"
-                        placeholder="Masukkan progres"
+                        placeholder="Contoh: 100, 99.5"
                         label="Progres (%)"
                         value={progresEntri}
-                        onChange={(e) => setProgresEntri(e.target.value)} />
+                        onChange={(e) => {
+                            const value = e.target.value
+                                .replace(/[^0-9.]/g, "")     // hanya angka & titik
+                                .replace(/(\..*)\./g, "$1");
+                            setProgresEntri(value)
+                        }} />
                     <Dropdown
                         name="bast_entri"
                         label="Sudah BAST?"
@@ -202,7 +211,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         onChange={(e) => setNamaKepalaSekolah(e.target.value)} />
                     <TextField
                         name="nomor_telepon"
-                        placeholder="Masukkan nomor telepon"
+                        placeholder="contoh: 08123456789 (tanpa +/-)"
                         label="Nomor Telepon"
                         value={
                             isUserSecretTyping ?
@@ -211,8 +220,9 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         onChange={(e) => {
                             setIsUserSecretTyping(true);
                             setNomorTelepon("")
+                            const value = e.target.value.replace(/[^0-9]/g, "");
                             isUserSecretTyping &&
-                                setNomorTelepon(e.target.value)
+                                setNomorTelepon(value)
                         }} />
                 </div>
 
