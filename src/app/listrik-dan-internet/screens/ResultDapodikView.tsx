@@ -198,7 +198,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     } />
                 <Dropdown
                     name="internet_provider"
-                    label="Internet Provider"
+                    label="Internet Provider (Wi-Fi)"
                     options={[
                         "IndiHome",
                         "Biznet",
@@ -224,7 +224,14 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         "Lainnya",
                     ]}
                     valueSelected={internetProvider}
-                    onChange={(e) => { setInternetProvider(e.target.value) }} />
+                    onChange={(e) => {
+                        if (e.target.value === "Tidak Ada") {
+                            setKecepatanInternetMbps("0");
+                        } else {
+                            setKecepatanInternetMbps("")
+                        }
+                        setInternetProvider(e.target.value)
+                    }} />
                 {/* <TextField
                     name="internet_provider"
                     placeholder="Masukkan internet provider"
@@ -240,7 +247,12 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         const value = e.target.value
                             .replace(/[^0-9.]/g, "")     // hanya angka & titik
                             .replace(/(\..*)\./g, "$1");
-                        setKecepatanInternetMbps(value)
+                        if (internetProvider === "Tidak Ada") {
+                            setKecepatanInternetMbps("0");
+                        } else {
+                            value !== "0" &&
+                                setKecepatanInternetMbps(value)
+                        }
                     }} />
                 <div className="w-full text-start">
                     Silahkan cek kecepatan di:
