@@ -1,7 +1,6 @@
+import getDateTimeNow from "@/src/utils/getDateTimeNow";
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
-
-export const runtime = "nodejs";
 
 export async function GET(req: Request) {
     try {
@@ -24,7 +23,7 @@ export async function GET(req: Request) {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.SPREADSHEET_LISTRIK_DAN_INTERNET_ID!,
-            range: "Metadata!A:N",
+            range: "Metadata!A:U",
         });
 
         const rows = response.data.values;
@@ -52,6 +51,13 @@ export async function GET(req: Request) {
             [headerRow[11]]: "Internet Provider",
             [headerRow[12]]: "Kecepatan Internet (Mbps)",
             [headerRow[13]]: "Status",
+            [headerRow[14]]: "Kepemilikan Tanah",
+            [headerRow[15]]: "Bukti Kepemilikan Tanah",
+            [headerRow[16]]: "Ket Daya",
+            [headerRow[17]]: "Ket Sumber",
+            [headerRow[18]]: "Keterangan",
+            [headerRow[19]]: "Rekomendasi",
+            [headerRow[20]]: "Timestamp",
         };
 
         // cari berdasarkan NPSN (kolom index 1)
@@ -91,7 +97,17 @@ export async function GET(req: Request) {
 
 export async function POST(req: NextRequest) {
     try {
-        const { dataDapodikRowIndex, daya, sumberListrik, namaKepalaSekolah, nomorTelepon, internetProvider, kecepatanInternet } = await req.json();
+        const {
+            dataDapodikRowIndex,
+            daya,
+            sumberListrik,
+            namaKepalaSekolah,
+            nomorTelepon,
+            internetProvider,
+            kecepatanInternet,
+            kepemilikanTanah,
+            buktiKepemilikanTanah
+        } = await req.json();
 
         const auth = new google.auth.GoogleAuth({
             credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS!),
@@ -102,10 +118,25 @@ export async function POST(req: NextRequest) {
 
         await sheets.spreadsheets.values.update({
             spreadsheetId: process.env.SPREADSHEET_LISTRIK_DAN_INTERNET_ID!,
-            range: `Metadata!H${dataDapodikRowIndex}:M${dataDapodikRowIndex}`,
+            range: `Metadata!H${dataDapodikRowIndex}:U${dataDapodikRowIndex}`,
             valueInputOption: "USER_ENTERED",
             requestBody: {
-                values: [[daya, sumberListrik, namaKepalaSekolah, nomorTelepon, internetProvider, kecepatanInternet]],
+                values: [[
+                    daya,
+                    sumberListrik,
+                    namaKepalaSekolah,
+                    nomorTelepon,
+                    internetProvider,
+                    kecepatanInternet,
+                    null,
+                    kepemilikanTanah,
+                    buktiKepemilikanTanah,
+                    null,
+                    null,
+                    null,
+                    null,
+                    getDateTimeNow(),
+                ]],
             },
         });
 

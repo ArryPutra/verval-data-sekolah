@@ -4,9 +4,15 @@ export async function writeRevitalisasiPdmByNpsn(
     bastEntri: string,
     linkDokumentasi: string,
     namaKepalaSekolah: string,
-    nomorTelepon: string
+    nomorTelepon: string,
+    linkDokumenBast: string
 ) {
-    if (!progresEntri || !bastEntri || !linkDokumentasi || !namaKepalaSekolah || !nomorTelepon)
+    if (!progresEntri ||
+        !bastEntri ||
+        !linkDokumentasi ||
+        !namaKepalaSekolah ||
+        !nomorTelepon ||
+        !linkDokumenBast)
         throw new Error("Mohon lengkapi semua data");
 
     const res = await fetch("/api/revitalisasi-pdm", {
@@ -18,7 +24,8 @@ export async function writeRevitalisasiPdmByNpsn(
             bastEntri,
             linkDokumentasi,
             namaKepalaSekolah,
-            nomorTelepon
+            nomorTelepon,
+            linkDokumenBast
         })
     });
 

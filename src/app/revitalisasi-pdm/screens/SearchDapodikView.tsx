@@ -1,7 +1,6 @@
 import Alert from '@/src/components/Alert'
 import Button from '@/src/components/Button'
 import TextField from '@/src/components/TextField'
-import { fetchListrikDanInternetByNpsn } from '@/src/services/listrik-dan-internet/fetchListrikDanInternetByNpsn'
 import { fetchRevitalisasiPdmByNpsn } from '@/src/services/revitalisasi-pdm/fetchRevitalisasiPdmByNpsn'
 import { useEffect, useState } from 'react'
 

@@ -5,14 +5,18 @@ export async function writeListrikDanInternetByNpsn(
     namaKepalaSekolah: string,
     nomorTelepon: string,
     internetProvider: string,
-    kecepatanInternet: string
+    kecepatanInternet: string,
+    kepemilikanTanah: String,
+    buktiKepemilikanTanah: String
 ) {
     if (!daya ||
         !sumberListrik ||
         !namaKepalaSekolah ||
         !nomorTelepon ||
         !internetProvider ||
-        !kecepatanInternet)
+        !kecepatanInternet ||
+        !kepemilikanTanah ||
+        !buktiKepemilikanTanah)
         throw new Error("Mohon lengkapi semua data");
 
     const res = await fetch("/api/listrik-dan-internet", {
@@ -25,7 +29,9 @@ export async function writeListrikDanInternetByNpsn(
             namaKepalaSekolah,
             nomorTelepon,
             internetProvider,
-            kecepatanInternet
+            kecepatanInternet,
+            kepemilikanTanah,
+            buktiKepemilikanTanah
         })
     });
 

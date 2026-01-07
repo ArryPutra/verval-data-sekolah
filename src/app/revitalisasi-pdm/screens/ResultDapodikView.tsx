@@ -23,6 +23,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
 
     const [progresEntri, setProgresEntri] = useState(dataDapodik["Progres (Entri)"]);
     const [bastEntri, setBastEntri] = useState(dataDapodik["BAST (Entri)"]);
+    const [linkDokumenBast, setLinkDokumenBast] = useState(dataDapodik["Link Dokumen BAST"]);
     const [linkDokumentasi, setLinkDokumentasi] = useState(dataDapodik["Link Dokumentasi"]);
     const [namaKepalaSekolah, setNamaKepalaSekolah] = useState(dataDapodik["Nama Kepala Sekolah"]);
     const [nomorTelepon, setNomorTelepon] = useState(dataDapodik["Nomor Telepon"]);
@@ -31,7 +32,14 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
         setErrorMessage("");
         setSuccessMessage("");
 
-        if (!progresEntri || !bastEntri || !linkDokumentasi || !namaKepalaSekolah || !nomorTelepon) {
+        if (
+            !progresEntri ||
+            !bastEntri ||
+            !linkDokumentasi ||
+            !namaKepalaSekolah ||
+            !nomorTelepon ||
+            !linkDokumenBast
+        ) {
             setErrorMessage("Mohon lengkapi semua data");
             return;
         }
@@ -48,7 +56,8 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 bastEntri,
                 linkDokumentasi,
                 namaKepalaSekolah,
-                nomorTelepon
+                nomorTelepon,
+                linkDokumenBast
             );
 
             if (!result.error) {
@@ -59,7 +68,8 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     "Link Dokumentasi": linkDokumentasi,
                     "Nama Kepala Sekolah": namaKepalaSekolah,
                     "Nomor Telepon": nomorTelepon,
-                    "Status": "Sudah Mengisi"
+                    "Status": "Sudah Mengisi",
+                    "Link Dokumen BAST": linkDokumenBast,
                 }));
                 setSuccessMessage(result.message);
             } else {
@@ -112,16 +122,26 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     </p>
                 </section>
                 <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Link Dokumen BAST:</h1>
+                    <div className="w-full max-w-sm">
+                        <a href={dataDapodik["Link Dokumen BAST"]}
+                            className="w-full break-all text-blue-500 font-bold">
+                            {dataDapodik["Link Dokumen BAST"] ??
+                                <span className="text-red-500">Kosong</span>
+                            }
+                        </a>
+                    </div>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Link Dokumentasi:</h1>
                     <div className="w-full max-w-sm">
                         <a href={dataDapodik["Link Dokumentasi"]}
-                            className="w-full break-all text-blue-500">
+                            className="w-full break-all text-blue-500 font-bold">
                             {dataDapodik["Link Dokumentasi"] ??
                                 <span className="text-red-500">Kosong</span>
                             }
                         </a>
                     </div>
-
                 </section>
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Nama Kepala Sekolah:</h1>
@@ -158,27 +178,6 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
             </div>
 
             <div className="w-full space-y-3 mt-4">
-
-                <div className="space-y-3">
-
-
-                    {
-                        errorMessage &&
-                        <Alert
-                            title="Pesan Kesalahan:"
-                            message={errorMessage}
-                            variant="error" />
-                    }
-                    {
-                        successMessage &&
-                        <Alert
-                            title="Pesan Berhasil:"
-                            message={successMessage}
-                            variant="success" />
-                    }
-
-                </div>
-
                 <div className="mt-4 space-y-3">
                     <TextField
                         name="progres_entri"
@@ -198,11 +197,23 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         valueSelected={bastEntri}
                         onChange={(e) => setBastEntri(e.target.value)} />
                     <TextField
+                        name="link_dokumen_bast"
+                        placeholder="Masukkan link dokumen bast"
+                        label="Link Dokumen BAST"
+                        value={linkDokumenBast}
+                        onChange={(e) => setLinkDokumenBast(e.target.value)} />
+                    <div className="w-full text-start text-xs opacity-70 -mt-1.5">
+                        *Pastikan link Google Drive yang dikirim dapat diakses publik.
+                    </div>
+                    <TextField
                         name="link_dokumentasi"
                         placeholder="Masukkan link dokumentasi"
                         label="Link Dokumentasi"
                         value={linkDokumentasi}
                         onChange={(e) => setLinkDokumentasi(e.target.value)} />
+                    <div className="w-full text-start text-xs opacity-70 -mt-1.5">
+                        *Pastikan link Google Drive yang dikirim dapat diakses publik.
+                    </div>
                     <TextField
                         name="nama_kepala_sekolah"
                         placeholder="Masukkan nama kepala sekolah"
@@ -225,6 +236,21 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                                 setNomorTelepon(value)
                         }} />
                 </div>
+
+                {
+                    errorMessage &&
+                    <Alert
+                        title="Pesan Kesalahan:"
+                        message={errorMessage}
+                        variant="error" />
+                }
+                {
+                    successMessage &&
+                    <Alert
+                        title="Pesan Berhasil:"
+                        message={successMessage}
+                        variant="success" />
+                }
 
                 <Button
                     label="Simpan Data"

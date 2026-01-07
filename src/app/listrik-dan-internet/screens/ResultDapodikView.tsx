@@ -26,14 +26,26 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
     const [nomorTelepon, setNomorTelepon] = useState(dataDapodikParam["Nomor Telepon"]);
     const [internetProvider, setInternetProvider] = useState(dataDapodikParam["Internet Provider"]);
     const [kecepatanInternetMbps, setKecepatanInternetMbps] = useState(dataDapodikParam["Kecepatan Internet (Mbps)"]);
+    const [kepemilikanTanah, setKepemilikanTanah] = useState(dataDapodikParam["Kepemilikan Tanah"]);
+    const [buktiKepemilikanTanah, setBuktiKepemilikanTanah] = useState(dataDapodikParam["Bukti Kepemilikan Tanah"]);
 
     const [isUserSecretTyping, setIsUserSecretTyping] = useState(false);
+
+    console.log(dataDapodikParam);
 
     async function onSave() {
         setErrorMessage("");
         setSuccessMessage("");
 
-        if (!dayaEntri || !sumberListrikEntri || !namaKepalaSekolah || !nomorTelepon || !internetProvider || !kecepatanInternetMbps) {
+        if (!dayaEntri ||
+            !sumberListrikEntri ||
+            !namaKepalaSekolah ||
+            !nomorTelepon ||
+            !internetProvider ||
+            !kecepatanInternetMbps ||
+            !kepemilikanTanah ||
+            !buktiKepemilikanTanah
+        ) {
             setErrorMessage("Mohon lengkapi semua data");
             return;
         }
@@ -51,7 +63,9 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 namaKepalaSekolah,
                 nomorTelepon,
                 internetProvider,
-                kecepatanInternetMbps
+                kecepatanInternetMbps,
+                kepemilikanTanah,
+                buktiKepemilikanTanah
             );
 
             if (!result.error) {
@@ -63,7 +77,9 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     "Nomor Telepon": nomorTelepon,
                     "Internet Provider": internetProvider,
                     "Kecepatan Internet (Mbps)": kecepatanInternetMbps,
-                    "Status": "SUDAH"
+                    "Status": "SUDAH",
+                    "Kepemilikan Tanah": kepemilikanTanah,
+                    "Bukti Kepemilikan Tanah": buktiKepemilikanTanah
                 }));
                 setSuccessMessage(result.message);
             } else {
@@ -102,16 +118,6 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     <p className="w-full font-bold">{dataDapodikParam["Kabupaten Kota"]}</p>
                 </section>
 
-                {/* <h1 className="font-bold text-blue-500 mt-6">Data (Dapodik)</h1>
-                <section className="flex max-sm:flex-col items-start">
-                    <h1 className="w-full">Daya Listrik (Dapodik):</h1>
-                    <p className="w-full font-bold">{dataDapodikParam["Daya (Dapodik)"]}</p>
-                </section>
-                <section className="flex max-sm:flex-col items-start">
-                    <h1 className="w-full">Sumber Listrik (Dapodik):</h1>
-                    <p className="w-full font-bold">{dataDapodikParam["Sumber Listrik (Dapodik)"]}</p>
-                </section> */}
-
                 <h1 className="font-bold text-blue-500 mt-6">Data Terbaru</h1>
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Daya Listrik:</h1>
@@ -136,6 +142,14 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                 <section className="flex max-sm:flex-col items-start">
                     <h1 className="w-full">Kecepatan Internet (Mbps):</h1>
                     <p className={`w-full font-bold ${dataDapodik["Kecepatan Internet (Mbps)"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Kecepatan Internet (Mbps)"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Kepemilikan Tanah:</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Kepemilikan Tanah"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Kepemilikan Tanah"] ?? "Kosong"}</p>
+                </section>
+                <section className="flex max-sm:flex-col items-start">
+                    <h1 className="w-full">Bukti Kepemilikan Tanah:</h1>
+                    <p className={`w-full font-bold ${dataDapodik["Bukti Kepemilikan Tanah"] ? "text-black" : "text-red-500"}`}>{dataDapodik["Bukti Kepemilikan Tanah"] ?? "Kosong"}</p>
                 </section>
                 <section className="flex max-sm:flex-col items-start h-fit max-sm:gap-1">
                     <h1 className="w-full">Status Data:</h1>
@@ -232,12 +246,6 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         }
                         setInternetProvider(e.target.value)
                     }} />
-                {/* <TextField
-                    name="internet_provider"
-                    placeholder="Masukkan internet provider"
-                    label="Internet Provider"
-                    value={internetProvider}
-                    onChange={(e) => { setInternetProvider(e.target.value) }} /> */}
                 <TextField
                     name="kecepatan_internet_mbps"
                     placeholder="Contoh: 30, 24.5"
@@ -254,14 +262,50 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                                 setKecepatanInternetMbps(value)
                         }
                     }} />
-                <div className="w-full text-start">
-                    Silahkan cek kecepatan di:
+                <div className="w-full text-start text-xs opacity-70 -mt-1.5">
+                    Cek kecepatan internet melalui:
                     <Link href="https://www.speedtest.net/"
                         target="_blank"
                         className="text-blue-500 hover:underline ml-1">
                         https://www.speedtest.net/
                     </Link>
                 </div>
+                <Dropdown
+                    name="kepemilikan_tanah"
+                    label="Kepemilikan Tanah"
+                    options={[
+                        "Milik Sendiri",
+                        "Milik Pemerintah Pusat",
+                        "Milik Pemerintah Daerah",
+                        "Milik Yayasan",
+                        "Milik Desa / Kelurahan",
+                        "Milik Adat",
+                        "Sewa",
+                        "Pinjam Pakai",
+                        "Hibah",
+                        "Wakaf",
+                        "Kerja Sama",
+                        "Lainnya"
+                    ]}
+                    valueSelected={kepemilikanTanah}
+                    onChange={(e) => { setKepemilikanTanah(e.target.value) }} />
+                <Dropdown
+                    name="bukti_kepemilikan_tanah"
+                    label="Bukti Kepemilikan Tanah"
+                    options={[
+                        "Sertifikat Hak Milik (SHM)",
+                        "Sertifikat Hak Guna Bangunan (HGB)",
+                        "Akta Jual Beli (AJB)",
+                        "Surat Keterangan Tanah (SKT)",
+                        "Letter C / Girik",
+                        "Ikrar Wakaf",
+                        "Perjanjian Pinjam Pakai",
+                        "Perjanjian Sewa",
+                        "Tanah Milik Pemerintah",
+                        "Lainnya",
+                    ]}
+                    valueSelected={buktiKepemilikanTanah}
+                    onChange={(e) => { setBuktiKepemilikanTanah(e.target.value) }} />
 
                 {
                     errorMessage &&

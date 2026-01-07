@@ -27,7 +27,7 @@ export default function RevitalisasiPdmPage() {
                 <h1 className="font-bold text-xl text-blue-500">
                     BPMP Provinsi Kalimantan Selatan
                 </h1>
-                <p>Verifikasi & Validasi Revitalisasi PDM</p>
+                <p>Verifikasi & Validasi Revitalisasi Satuan Pendidikan</p>
 
                 {
                     dataDapodik === null ?

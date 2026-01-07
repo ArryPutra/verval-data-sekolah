@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import SearchDapodikView from "./screens/SearchDapodikView";
 import ResultDapodikView from "./screens/ResultDapodikView";
-import { fetchListrikDanInternetByNpsn } from "@/src/services/listrik-dan-internet/fetchListrikDanInternetByNpsn";
 
 export default function ListrikDanInternetPage() {
     const [dataDapodik, setDataDapodik] = useState(null);
@@ -28,7 +27,7 @@ export default function ListrikDanInternetPage() {
                 <h1 className="font-bold text-xl text-blue-500">
                     BPMP Provinsi Kalimantan Selatan
                 </h1>
-                <p>Verifikasi & Validasi Daya Listrik dan Internet Sekolah</p>
+                <p>Verifikasi & Validasi Daya Listrik, Internet, dan Lahan Sekolah</p>
 
                 {
                     dataDapodik === null ?

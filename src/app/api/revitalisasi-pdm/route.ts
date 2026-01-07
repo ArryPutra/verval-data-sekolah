@@ -1,3 +1,4 @@
+import getDateTimeNow from "@/src/utils/getDateTimeNow";
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,7 +23,7 @@ export async function GET(req: Request) {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.SPREADSHEET_REVITALISASI_PDM_ID!,
-            range: "Metadata!A:U",
+            range: "Metadata!A:W",
         });
 
         const rows = response.data.values;
@@ -57,6 +58,8 @@ export async function GET(req: Request) {
             [headerRow[18]]: "Nama Kepala Sekolah",
             [headerRow[19]]: "Nomor Telepon",
             [headerRow[20]]: "Status",
+            [headerRow[21]]: "Link Dokumen BAST",
+            [headerRow[22]]: "Timestamp",
         };
 
         // cari berdasarkan NPSN (kolom index 1)
@@ -102,7 +105,8 @@ export async function POST(req: NextRequest) {
             bastEntri,
             linkDokumentasi,
             namaKepalaSekolah,
-            nomorTelepon
+            nomorTelepon,
+            linkDokumenBast
         } = await req.json();
 
         const auth = new google.auth.GoogleAuth({
@@ -114,10 +118,19 @@ export async function POST(req: NextRequest) {
 
         await sheets.spreadsheets.values.update({
             spreadsheetId: process.env.SPREADSHEET_REVITALISASI_PDM_ID!,
-            range: `Metadata!P${dataDapodikRowIndex}:T${dataDapodikRowIndex}`,
+            range: `Metadata!P${dataDapodikRowIndex}:W${dataDapodikRowIndex}`,
             valueInputOption: "USER_ENTERED",
             requestBody: {
-                values: [[progresEntri, bastEntri, linkDokumentasi, namaKepalaSekolah, nomorTelepon]],
+                values: [[
+                    progresEntri,
+                    bastEntri,
+                    linkDokumentasi,
+                    namaKepalaSekolah,
+                    nomorTelepon,
+                    null,
+                    linkDokumenBast,
+                    getDateTimeNow()
+                ]],
             },
         });
 
