@@ -25,10 +25,10 @@ export default function Home() {
 
                 <div className="flex flex-col gap-2 mt-6 w-full">
                     <Button
-                        label="Listrik dan Internet"
+                        label="Listrik, Internet dan Lahan"
                         href="/listrik-dan-internet" />
                     <Button
-                        label="Revitalisasi PDM"
+                        label="Revitalisasi Satuan Pendidikan"
                         href="/revitalisasi-pdm" />
                 </div>
             </div>
