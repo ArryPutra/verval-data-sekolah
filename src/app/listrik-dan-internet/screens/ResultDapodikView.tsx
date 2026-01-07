@@ -229,6 +229,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         "Moratel (ISP lokal)",
                         "Starlink",
                         "Ameera Network",
+                        "FiberNet",
                         "Telkomsel",
                         "Indosat Ooredoo Hutchison",
                         "XL Axiata",
