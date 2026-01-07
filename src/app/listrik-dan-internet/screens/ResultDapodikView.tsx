@@ -286,7 +286,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     name="bukti_kepemilikan_tanah"
                     label="Bukti Kepemilikan Tanah"
                     options={[
-                        "Sertifikat Hak Milik / HGB",
+                        "Sertifikat Hak Milik / SHM",
                         "Akta Jual Beli",
                         "Surat Hibah",
                         "Berita Acara Serah Terima Aset",
@@ -299,7 +299,6 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     ]}
                     valueSelected={buktiKepemilikanTanah}
                     onChange={(e) => { setBuktiKepemilikanTanah(e.target.value) }} />
-
                 {
                     errorMessage &&
                     <Alert
