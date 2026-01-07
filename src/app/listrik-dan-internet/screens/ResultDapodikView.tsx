@@ -275,18 +275,10 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     name="kepemilikan_tanah"
                     label="Kepemilikan Tanah"
                     options={[
-                        "Milik Sendiri",
-                        "Milik Pemerintah Pusat",
-                        "Milik Pemerintah Daerah",
-                        "Milik Yayasan",
-                        "Milik Desa / Kelurahan",
-                        "Milik Adat",
+                        "Milik",
                         "Sewa",
-                        "Pinjam Pakai",
-                        "Hibah",
-                        "Wakaf",
-                        "Kerja Sama",
-                        "Lainnya"
+                        "Pinjam",
+                        "Bukan Milik"
                     ]}
                     valueSelected={kepemilikanTanah}
                     onChange={(e) => { setKepemilikanTanah(e.target.value) }} />
@@ -294,16 +286,16 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                     name="bukti_kepemilikan_tanah"
                     label="Bukti Kepemilikan Tanah"
                     options={[
-                        "Sertifikat Hak Milik (SHM)",
-                        "Sertifikat Hak Guna Bangunan (HGB)",
-                        "Akta Jual Beli (AJB)",
-                        "Surat Keterangan Tanah (SKT)",
-                        "Letter C / Girik",
-                        "Ikrar Wakaf",
-                        "Perjanjian Pinjam Pakai",
-                        "Perjanjian Sewa",
-                        "Tanah Milik Pemerintah",
-                        "Lainnya",
+                        "Sertifikat Hak Milik / HGB",
+                        "Akta Jual Beli",
+                        "Surat Hibah",
+                        "Berita Acara Serah Terima Aset",
+                        "Dokumen Penetapan BMN / BMD",
+                        "Surat Perjanjian Sewa",
+                        "Surat Perjanjian Pinjam Pakai",
+                        "Nota Kesepahaman(MoU)",
+                        "Surat Izin Penggunaan",
+                        "Tidak Ada Dokumen"
                     ]}
                     valueSelected={buktiKepemilikanTanah}
                     onChange={(e) => { setBuktiKepemilikanTanah(e.target.value) }} />
