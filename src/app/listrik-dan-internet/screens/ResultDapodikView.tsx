@@ -230,6 +230,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         "Starlink",
                         "Ameera Network",
                         "FiberNet",
+                        "IndiBiz",
                         "Telkomsel",
                         "Indosat Ooredoo Hutchison",
                         "XL Axiata",
@@ -295,6 +296,7 @@ export default function ResultDapodikView({ dataDapodikParam, dataDapodikRowInde
                         "Surat Perjanjian Pinjam Pakai",
                         "Nota Kesepahaman(MoU)",
                         "Surat Izin Penggunaan",
+                        "Lainnya",
                         "Tidak Ada Dokumen"
                     ]}
                     valueSelected={buktiKepemilikanTanah}
