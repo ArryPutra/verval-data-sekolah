@@ -60,6 +60,7 @@ export default function SearchDapodikView({ onResult }: SearchDapodikViewProps) 
                 onChange={(e) => setNpsn(e.target.value)} />
 
             <Button label="Cari Data" className="mt-4" onClick={() => onSubmit()} isLoading={isLoading} />
+            <Button label="Dashboard Revitalisasi Satuan Pendidikan" variant='secondary' className='mt-2' href='https://lookerstudio.google.com/reporting/f115ff34-fc21-4075-87fb-81a87ac61a92' />
         </div>
     )
 }

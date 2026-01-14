@@ -8,7 +8,7 @@ type ButtonProps = {
     className?: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     disabled?: boolean;
-    variant?: "primary" | "gray";
+    variant?: "primary" | "gray" | "secondary";
     isLoading?: boolean;
 }
 
@@ -23,6 +23,10 @@ export default function Button({ label, href, className, onClick, disabled = fal
 
     if (variant === "gray") {
         baseClass += " bg-gray-200 !text-black hover:bg-gray-300 focus:ring-gray-300";
+    }
+
+    if (variant === "secondary") {
+        baseClass += " !text-blue-500 border-blue-500 border-2 focus:ring-blue-200";
     }
 
     if (href) {
